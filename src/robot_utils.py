@@ -47,3 +47,13 @@ def move_straight_closed_loop(time, speed):
     motor_pair.stop()
     print('current yaw angle ', angle, ' time elapsed ', timer.now())    
 
+def move_straight_any_distance(distance, unit): #Makes a method to move straight with any given distance.
+    motor_pair.set_motor_rotation(17.6, 'cm') #Sets motor rotation. pi x 5.6
+    motor_pair.set_stop_action('coast') #Makes the robot stop more smoothly.
+    for count in range(0, 10): #If you do it ten times then you would go the whole distance given.
+        motor_pair.move_tank(distance / 10, 'in') #Moves the robot 1/10 of the distance.
+        print(distance / 10, 'in')#Prints the 1/10 of the distance.
+        if motion_sensor.get_yaw_angle() < 0: #If the yaw angle is less than 0:
+            motor_pair.move_tank(0.05, 'rotations', 1, 0) # Move 0.1 rotations to the right
+        if motion_sensor.get_yaw_angle() > 0: #If the yaw angle is greater that 0:
+            motor_pair.move_tank(0.05, 'rotations', 0, 1) # Move 0.1 rotations to the left
